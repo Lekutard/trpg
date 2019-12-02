@@ -1,0 +1,32 @@
+version: '3'
+services:
+  trpg_db:
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: trpg
+      MYSQL_USER: trpg_user
+      MYSQL_PASSWORD: trpg_password
+    ports:
+      - "3306:3306"
+  trpg_backend:
+    build:
+      context: .
+      dockerfile: trpg.docker
+    depends_on:
+      - trpg_db
+    volumes:
+      - .:/go/src/github.com/trpg
+    environment:
+      PORT: 9800
+      DB_USER: trpg_user
+      DB_PASSWORD: trpg_password
+      DB_HOST: trpg_db
+      DB_NAME: trpg
+      DB_MASTER_PORT: 3306
+      DB_READ_REPLICA_PORT: 3306
+    ports:
+      - '9800:9800'
+    tty:
+      true

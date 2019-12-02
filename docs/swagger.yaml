@@ -1,0 +1,66 @@
+basePath: /api
+definitions:
+  api.ErrorResponseObject:
+    properties:
+      message:
+        type: string
+    type: object
+  ports.GeneralRollOutputPort:
+    properties:
+      critical:
+        type: boolean
+      difference:
+        type: integer
+      fumble:
+        type: boolean
+      success:
+        type: boolean
+    type: object
+host: localhost:9800
+info:
+  contact:
+    email: support@swagger.io
+    name: 仮
+    url: http://www.swagger.io/support
+  description: 仮 API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: 仮 API
+  version: "1.0"
+paths:
+  /rolls/general:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 目標値
+        in: query
+        name: target_value
+        required: true
+        type: integer
+      - description: 補正値。足すと難しくなり、引くと簡単になる
+        in: query
+        name: ajust
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/ports.GeneralRollOutputPort'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponseObject'
+      summary: 一般判定の結果を返す
+schemes:
+- http
+swagger: "2.0"
